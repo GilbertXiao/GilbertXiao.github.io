@@ -66,4 +66,5 @@ function switchNight() {
 }
 
 findNightIcon();
-applyNight(isNight);
+//默认白天
+applyNight(false);
