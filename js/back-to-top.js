@@ -126,7 +126,7 @@ function loadBackTop() {
                 });
             }
 
-            const left = $mainColumn.offset().left + $mainColumn.outerWidth() + padding;
+            const left = $mainColumn.offset().left + $mainColumn.outerWidth() - padding ;
             nextState = Object.assign({}, nextState, {
                 left: Math.min(left, maxLeft)
             });
