@@ -31,7 +31,7 @@
     display: none;
     color: #aaa;
     top: 50px;
-    right: 0px;
+    right: -60px;
     position: absolute;
 }
 .waifu:hover .waifu-tool {
@@ -48,6 +48,7 @@
 }
 .waifu #live2d{
     position: relative;
+    right: -80px;
 }
 
 @keyframes shake {

@@ -10831,6 +10831,8 @@ footer.footer .level-end .field {
   line-height: 24px;
   outline: none;
   transform: translateY(120px);
+  z-index: 2;
+  right: 160px !important;
 }
 #back-to-top.fade-in {
   opacity: 1;
