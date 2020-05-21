@@ -1,1 +1,242 @@
-!function(t,e){const n=t(".ins-search"),s=n.find(".ins-search-input"),a=n.find(".ins-section-wrapper"),i=n.find(".ins-section-container");function o(n,s,a,i,o){return t("<div>").addClass("ins-selectable").addClass("ins-search-item").append(t("<header>").append(t("<i>").addClass("fa").addClass("fa-"+n)).append(t("<span>").addClass("ins-title").text(null!=s&&""!==s?s:e.TRANSLATION.UNTITLED)).append(a?t("<span>").addClass("ins-slug").text(a):null)).append(i?t("<p>").addClass("ins-search-preview").text(i):null).attr("data-url",o)}function r(n,s){let a;if(0===s.length)return null;const i=e.TRANSLATION[n];switch(n){case"POSTS":case"PAGES":a=s.map(t=>o("file",t.title,null,t.text.slice(0,150),t.link));break;case"CATEGORIES":case"TAGS":a=s.map(t=>o("CATEGORIES"===n?"folder":"tag",t.name,t.slug,null,t.link));break;default:return null}return(r=i,t("<section>").addClass("ins-section").append(t("<header>").addClass("ins-section-header").text(r))).append(a);var r}function c(t){return t.split(" ").filter(t=>!!t).map(t=>t.toUpperCase())}function l(t,e,n){const s=c(t);return s.filter(t=>n.filter(n=>!!Object.prototype.hasOwnProperty.call(e,n)&&e[n].toUpperCase().indexOf(t)>-1).length>0).length===s.length}function p(t,e,n,s){let a=0;return c(t).forEach(t=>{const i=new RegExp(t,"img");n.forEach((t,n)=>{if(Object.prototype.hasOwnProperty.call(e,t)){const o=e[t].match(i);a+=o?o.length*s[n]:0}})}),a}function u(t,e){const n=function(t){return{post:function(e){return p(t,e,["title","text"],[3,1])},page:function(e){return p(t,e,["title","text"],[3,1])},category:function(e){return p(t,e,["name","slug"],[1,1])},tag:function(e){return p(t,e,["name","slug"],[1,1])}}}(e),s=function(t){return{post:function(e){return l(t,e,["title","text"])},page:function(e){return l(t,e,["title","text"])},category:function(e){return l(t,e,["name","slug"])},tag:function(e){return l(t,e,["name","slug"])}}}(e),a=t.posts,i=t.pages,o=t.tags,r=t.categories;return{posts:a.filter(s.post).sort((t,e)=>n.post(e)-n.post(t)).slice(0,5),pages:i.filter(s.page).sort((t,e)=>n.page(e)-n.page(t)).slice(0,5),categories:r.filter(s.category).sort((t,e)=>n.category(e)-n.category(t)).slice(0,5),tags:o.filter(s.tag).sort((t,e)=>n.tag(e)-n.tag(t)).slice(0,5)}}function d(e){const n=t.makeArray(i.find(".ins-selectable"));let s=-1;n.forEach((e,n)=>{t(e).hasClass("active")&&(s=n)});const o=(n.length+s+e)%n.length;t(n[s]).removeClass("active"),t(n[o]).addClass("active"),function(t){if(0===t.length)return;const e=a[0].clientHeight,n=t.position().top-a.scrollTop(),s=t[0].clientHeight+t.position().top;s>e+a.scrollTop()&&a.scrollTop(s-a[0].clientHeight),n<0&&a.scrollTop(t.position().top)}(t(n[o]))}function f(t){t&&t.length&&(location.href=t.attr("data-url"))}n.parent().remove(".ins-search"),t("body").append(n),t.getJSON(e.CONTENT_URL,e=>{"#ins-search"===location.hash.trim()&&n.addClass("show"),s.on("input",(function(){const n=t(this).val();!function(t){i.empty();for(const e in t)i.append(r(e.toUpperCase(),t[e]))}(u(e,n))})),s.trigger("input")});let h=!1;t(document).on("click focus",".navbar-main .search",()=>{n.addClass("show"),n.find(".ins-search-input").focus()}).on("click touchend",".ins-search-item",(function(e){("click"===e.type||h)&&(f(t(this)),h=!1)})).on("click touchend",".ins-close",e=>{("click"===e.type||h)&&(t(".navbar-main").css("pointer-events","none"),setTimeout(()=>{t(".navbar-main").css("pointer-events","auto")},400),n.removeClass("show"),h=!1)}).on("keydown",t=>{if(n.hasClass("show"))switch(t.keyCode){case 27:n.removeClass("show");break;case 38:d(-1);break;case 40:d(1);break;case 13:f(i.find(".ins-selectable.active").eq(0))}}).on("touchstart",t=>{h=!0}).on("touchmove",t=>{h=!1})}(jQuery,window.INSIGHT_CONFIG);
+/**
+ * Insight search plugin
+ * @author PPOffice { @link https://github.com/ppoffice }
+ */
+(function($, CONFIG) {
+    const $main = $('.ins-search');
+    const $input = $main.find('.ins-search-input');
+    const $wrapper = $main.find('.ins-section-wrapper');
+    const $container = $main.find('.ins-section-container');
+    $main.parent().remove('.ins-search');
+    $('body').append($main);
+
+    function section(title) {
+        return $('<section>').addClass('ins-section')
+            .append($('<header>').addClass('ins-section-header').text(title));
+    }
+
+    function searchItem(icon, title, slug, preview, url) {
+        return $('<div>').addClass('ins-selectable').addClass('ins-search-item')
+            .append($('<header>').append($('<i>').addClass('fa').addClass('fa-' + icon))
+                .append($('<span>').addClass('ins-title').text(title != null && title !== '' ? title : CONFIG.TRANSLATION.UNTITLED))
+                .append(slug ? $('<span>').addClass('ins-slug').text(slug) : null))
+            .append(preview ? $('<p>').addClass('ins-search-preview').text(preview) : null)
+            .attr('data-url', url);
+    }
+
+    function sectionFactory(type, array) {
+        let $searchItems;
+        if (array.length === 0) return null;
+        const sectionTitle = CONFIG.TRANSLATION[type];
+        switch (type) {
+            case 'POSTS':
+            case 'PAGES':
+                $searchItems = array.map(item => {
+                    // Use config.root instead of permalink to fix url issue
+                    return searchItem('file', item.title, null, item.text.slice(0, 150), item.link);
+                });
+                break;
+            case 'CATEGORIES':
+            case 'TAGS':
+                $searchItems = array.map(item => {
+                    return searchItem(type === 'CATEGORIES' ? 'folder' : 'tag', item.name, item.slug, null, item.link);
+                });
+                break;
+            default:
+                return null;
+        }
+        return section(sectionTitle).append($searchItems);
+    }
+
+    function parseKeywords(keywords) {
+        return keywords.split(' ').filter(keyword => {
+            return !!keyword;
+        }).map(keyword => {
+            return keyword.toUpperCase();
+        });
+    }
+
+    /**
+     * Judge if a given post/page/category/tag contains all of the keywords.
+     * @param Object            obj     Object to be weighted
+     * @param Array<String>     fields  Object's fields to find matches
+     */
+    function filter(keywords, obj, fields) {
+        const keywordArray = parseKeywords(keywords);
+        const containKeywords = keywordArray.filter(keyword => {
+            const containFields = fields.filter(field => {
+                if (!Object.prototype.hasOwnProperty.call(obj, field)) {
+                    return false;
+                }
+                if (obj[field].toUpperCase().indexOf(keyword) > -1) {
+                    return true;
+                }
+                return false;
+            });
+            if (containFields.length > 0) {
+                return true;
+            }
+            return false;
+        });
+        return containKeywords.length === keywordArray.length;
+    }
+
+    function filterFactory(keywords) {
+        return {
+            post: function(obj) {
+                return filter(keywords, obj, ['title', 'text']);
+            },
+            page: function(obj) {
+                return filter(keywords, obj, ['title', 'text']);
+            },
+            category: function(obj) {
+                return filter(keywords, obj, ['name', 'slug']);
+            },
+            tag: function(obj) {
+                return filter(keywords, obj, ['name', 'slug']);
+            }
+        };
+    }
+
+    /**
+     * Calculate the weight of a matched post/page/category/tag.
+     * @param Object            obj     Object to be weighted
+     * @param Array<String>     fields  Object's fields to find matches
+     * @param Array<Integer>    weights Weight of every field
+     */
+    function weight(keywords, obj, fields, weights) {
+        let value = 0;
+        parseKeywords(keywords).forEach(keyword => {
+            const pattern = new RegExp(keyword, 'img'); // Global, Multi-line, Case-insensitive
+            fields.forEach((field, index) => {
+                if (Object.prototype.hasOwnProperty.call(obj, field)) {
+                    const matches = obj[field].match(pattern);
+                    value += matches ? matches.length * weights[index] : 0;
+                }
+            });
+        });
+        return value;
+    }
+
+    function weightFactory(keywords) {
+        return {
+            post: function(obj) {
+                return weight(keywords, obj, ['title', 'text'], [3, 1]);
+            },
+            page: function(obj) {
+                return weight(keywords, obj, ['title', 'text'], [3, 1]);
+            },
+            category: function(obj) {
+                return weight(keywords, obj, ['name', 'slug'], [1, 1]);
+            },
+            tag: function(obj) {
+                return weight(keywords, obj, ['name', 'slug'], [1, 1]);
+            }
+        };
+    }
+
+    function search(json, keywords) {
+        const weights = weightFactory(keywords);
+        const filters = filterFactory(keywords);
+        const posts = json.posts;
+        const pages = json.pages;
+        const tags = json.tags;
+        const categories = json.categories;
+        return {
+            posts: posts.filter(filters.post).sort((a, b) => { return weights.post(b) - weights.post(a); }).slice(0, 5),
+            pages: pages.filter(filters.page).sort((a, b) => { return weights.page(b) - weights.page(a); }).slice(0, 5),
+            categories: categories.filter(filters.category).sort((a, b) => { return weights.category(b) - weights.category(a); }).slice(0, 5),
+            tags: tags.filter(filters.tag).sort((a, b) => { return weights.tag(b) - weights.tag(a); }).slice(0, 5)
+        };
+    }
+
+    function searchResultToDOM(searchResult) {
+        $container.empty();
+        for (const key in searchResult) {
+            $container.append(sectionFactory(key.toUpperCase(), searchResult[key]));
+        }
+    }
+
+    function scrollTo($item) {
+        if ($item.length === 0) return;
+        const wrapperHeight = $wrapper[0].clientHeight;
+        const itemTop = $item.position().top - $wrapper.scrollTop();
+        const itemBottom = $item[0].clientHeight + $item.position().top;
+        if (itemBottom > wrapperHeight + $wrapper.scrollTop()) {
+            $wrapper.scrollTop(itemBottom - $wrapper[0].clientHeight);
+        }
+        if (itemTop < 0) {
+            $wrapper.scrollTop($item.position().top);
+        }
+    }
+
+    function selectItemByDiff(value) {
+        const $items = $.makeArray($container.find('.ins-selectable'));
+        let prevPosition = -1;
+        $items.forEach((item, index) => {
+            if ($(item).hasClass('active')) {
+                prevPosition = index;
+
+            }
+        });
+        const nextPosition = ($items.length + prevPosition + value) % $items.length;
+        $($items[prevPosition]).removeClass('active');
+        $($items[nextPosition]).addClass('active');
+        scrollTo($($items[nextPosition]));
+    }
+
+    function gotoLink($item) {
+        if ($item && $item.length) {
+            location.href = $item.attr('data-url');
+        }
+    }
+
+    $.getJSON(CONFIG.CONTENT_URL, json => {
+        if (location.hash.trim() === '#ins-search') {
+            $main.addClass('show');
+        }
+        $input.on('input', function() {
+            const keywords = $(this).val();
+            searchResultToDOM(search(json, keywords));
+        });
+        $input.trigger('input');
+    });
+
+    let touch = false;
+    $(document).on('click focus', '.navbar-main .search', () => {
+        $main.addClass('show');
+        $main.find('.ins-search-input').focus();
+    }).on('click touchend', '.ins-search-item', function(e) {
+        if (e.type !== 'click' && !touch) {
+            return;
+        }
+        gotoLink($(this));
+        touch = false;
+    }).on('click touchend', '.ins-close', e => {
+        if (e.type !== 'click' && !touch) {
+            return;
+        }
+        $('.navbar-main').css('pointer-events', 'none');
+        setTimeout(() => {
+            $('.navbar-main').css('pointer-events', 'auto');
+        }, 400);
+        $main.removeClass('show');
+        touch = false;
+    }).on('keydown', e => {
+        if (!$main.hasClass('show')) return;
+        switch (e.keyCode) {
+            case 27: // ESC
+                $main.removeClass('show'); break;
+            case 38: // UP
+                selectItemByDiff(-1); break;
+            case 40: // DOWN
+                selectItemByDiff(1); break;
+            case 13: // ENTER
+                gotoLink($container.find('.ins-selectable.active').eq(0)); break;
+        }
+    }).on('touchstart', e => {
+        touch = true;
+    }).on('touchmove', e => {
+        touch = false;
+    });
+}(jQuery, window.INSIGHT_CONFIG));

@@ -1,1 +1,152 @@
-function loadBackTop(){const e=$("#back-to-top"),t=$("footer.footer"),o=$(".column-main"),s=$(".column-left"),n=$(".column-right");let i=0;let a=null;const l={base:{classname:"card has-text-centered",left:"",width:64,bottom:20,"border-radius":4}};function c(t){if(null===a||(o=a,s=t,[].concat(Object.keys(o),Object.keys(s)).some(e=>!Object.prototype.hasOwnProperty.call(o,e)||!Object.prototype.hasOwnProperty.call(s,e)||s[e]!==o[e]))){var o,s;e.attr("class",t.classname);for(const o in t)"classname"!==o&&e.css(o,t[o]);a=t}}function d(){return window.innerWidth>=1078}function r(){return n.length>0}function b(){return $(window).scrollTop()+$(window).height()}function h(){return e.outerHeight(!0)}function p(){if(d()||window.innerWidth>=768&&!d()&&!(s.length>0)&&r()){let s;const i=(o.outerWidth()-o.width())/2,a=$(window).width()-e.outerWidth(!0)-20,d=t.offset().top+h()/2+20;s=0===$(window).scrollTop()||b()<(r()?Math.max.apply(null,n.find(".widget").map((function(){return $(this).offset().top+$(this).outerHeight(!0)}))):0)+i+h()?l["desktop-hidden"]:b()<d?l["desktop-visible"]:Object.assign({},l["desktop-dock"],{bottom:b()-d+20});const p=o.offset().left+o.outerWidth()-i;s=Object.assign({},s,{left:Math.min(p,a)}),c(s)}else $(window).scrollTop()<i&&$(window).scrollTop()>0?c(l["mobile-visible"]):c(l["mobile-hidden"]),i=$(window).scrollTop()}l["desktop-hidden"]=Object.assign({},l.base,{classname:l.base.classname+" rise-up"}),l["desktop-visible"]=Object.assign({},l["desktop-hidden"],{classname:l["desktop-hidden"].classname+" fade-in"}),l["desktop-dock"]=Object.assign({},l["desktop-visible"],{classname:l["desktop-visible"].classname+" fade-in",width:40,"border-radius":"50%"}),l["mobile-hidden"]=Object.assign({},l.base,{classname:l.base.classname+" fade-in",right:20}),l["mobile-visible"]=Object.assign({},l["mobile-hidden"],{classname:l["mobile-hidden"].classname+" rise-up"}),p(),$(window).resize(p),$(window).scroll(p),$("#back-to-top").on("click",()=>{$("body, html").animate({scrollTop:0},400)})}$(document).ready(loadBackTop());
+$(document).ready(loadBackTop());
+
+function loadBackTop() {
+    const $button = $('#back-to-top');
+    const $footer = $('footer.footer');
+    const $mainColumn = $('.column-main');
+    const $leftSidebar = $('.column-left');
+    const $rightSidebar = $('.column-right');
+    let lastScrollTop = 0;
+    const rightMargin = 20;
+    const bottomMargin = 20;
+    let lastState = null;
+    const state = {
+        base: {
+            classname: 'card has-text-centered',
+            left: '',
+            width: 64,
+            bottom: bottomMargin,
+            'border-radius': 4
+        }
+    };
+    state['desktop-hidden'] = Object.assign({}, state.base, {
+        classname: state.base.classname + ' rise-up'
+    });
+    state['desktop-visible'] = Object.assign({}, state['desktop-hidden'], {
+        classname: state['desktop-hidden'].classname + ' fade-in'
+    });
+    state['desktop-dock'] = Object.assign({}, state['desktop-visible'], {
+        classname: state['desktop-visible'].classname + ' fade-in',
+        width: 40,
+        'border-radius': '50%'
+    });
+    state['mobile-hidden'] = Object.assign({}, state.base, {
+        classname: state.base.classname + ' fade-in',
+        right: rightMargin
+    });
+    state['mobile-visible'] = Object.assign({}, state['mobile-hidden'], {
+        classname: state['mobile-hidden'].classname + ' rise-up'
+    });
+
+    function isStateEquals(prev, next) {
+        return ![].concat(Object.keys(prev), Object.keys(next)).some(key => {
+            return !Object.prototype.hasOwnProperty.call(prev, key)
+                || !Object.prototype.hasOwnProperty.call(next, key)
+                || next[key] !== prev[key];
+        });
+    }
+
+    function applyState(state) {
+        if (lastState !== null && isStateEquals(lastState, state)) {
+            return;
+        }
+        $button.attr('class', state.classname);
+        for (const prop in state) {
+            if (prop === 'classname') {
+                continue;
+            }
+            $button.css(prop, state[prop]);
+        }
+        lastState = state;
+    }
+
+    function isDesktop() {
+        return window.innerWidth >= 1078;
+    }
+
+    function isTablet() {
+        return window.innerWidth >= 768 && !isDesktop();
+    }
+
+    function isScrollUp() {
+        return $(window).scrollTop() < lastScrollTop && $(window).scrollTop() > 0;
+    }
+
+    function hasLeftSidebar() {
+        return $leftSidebar.length > 0;
+    }
+
+    function hasRightSidebar() {
+        return $rightSidebar.length > 0;
+    }
+
+    function getRightSidebarBottom() {
+        if (!hasRightSidebar()) {
+            return 0;
+        }
+        return Math.max.apply(null, $rightSidebar.find('.widget').map(function () {
+            return $(this).offset().top + $(this).outerHeight(true);
+        }));
+    }
+
+    function getScrollTop() {
+        return $(window).scrollTop();
+    }
+
+    function getScrollBottom() {
+        return $(window).scrollTop() + $(window).height();
+    }
+
+    function getButtonWidth() {
+        return $button.outerWidth(true);
+    }
+
+    function getButtonHeight() {
+        return $button.outerHeight(true);
+    }
+
+    function updateScrollTop() {
+        lastScrollTop = $(window).scrollTop();
+    }
+
+    function update() {
+        // desktop mode or tablet mode with only right sidebar enabled
+        if (isDesktop() || (isTablet() && !hasLeftSidebar() && hasRightSidebar())) {
+            let nextState;
+            const padding = ($mainColumn.outerWidth() - $mainColumn.width()) / 2;
+            const maxLeft = $(window).width() - getButtonWidth() - rightMargin;
+            const maxBottom = $footer.offset().top + (getButtonHeight() / 2) + bottomMargin;
+            if (getScrollTop() === 0 || getScrollBottom() < getRightSidebarBottom() + padding + getButtonHeight()) {
+                nextState = state['desktop-hidden'];
+            } else if (getScrollBottom() < maxBottom) {
+                nextState = state['desktop-visible'];
+            } else {
+                nextState = Object.assign({}, state['desktop-dock'], {
+                    bottom: getScrollBottom() - maxBottom + bottomMargin
+                });
+            }
+
+            const left = $mainColumn.offset().left + $mainColumn.outerWidth() - padding ;
+            nextState = Object.assign({}, nextState, {
+                left: Math.min(left, maxLeft)
+            });
+            applyState(nextState);
+        } else {
+            // mobile and tablet mode
+            if (!isScrollUp()) {
+                applyState(state['mobile-hidden']);
+            } else {
+                applyState(state['mobile-visible']);
+            }
+            updateScrollTop();
+        }
+    }
+
+    update();
+    $(window).resize(update);
+    $(window).scroll(update);
+
+    $('#back-to-top').on('click', () => {
+        $('body, html').animate({ scrollTop: 0 }, 400);
+    });
+}
