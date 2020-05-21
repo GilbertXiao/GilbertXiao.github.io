@@ -2,8 +2,9 @@
             if($("#post-calendar").length <= 0){
                 return;
             }
-            $.getScript('https://cdn.bootcss.com/echarts/3.7.0/echarts.min.js', function () { 
+            $.getScript('https://cdn.bootcdn.net/ajax/libs/echarts/4.7.0/echarts.min.js', function () { 
             let myChart = echarts.init(document.getElementById('post-calendar'));
+            console.log("echart------"+echarts.version);
             let option = {
             title: {
                 top: 0,
