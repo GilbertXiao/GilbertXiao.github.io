@@ -10419,7 +10419,7 @@ fieldset[disabled] .select select:hover {
 .navbar-main .parentMenu .sub-menu a:hover {
   background: #ddd;
 }
-.navbar-main .parentMenu :hover .sub-menu {
+.navbar-main :hover .sub-menu {
   display: block;
 }
 @media screen and (max-width: 1087px) {
