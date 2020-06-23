@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.codesboy.cn/"/>
-  <updated>2020-06-21T16:03:15.195Z</updated>
+  <updated>2020-06-23T17:15:55.382Z</updated>
   <id>https://www.codesboy.cn/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>645_错误的集合</title>
+    <link href="https://www.codesboy.cn/2020/06/22/645_%E9%94%99%E8%AF%AF%E7%9A%84%E9%9B%86%E5%90%88/"/>
+    <id>https://www.codesboy.cn/2020/06/22/645_%E9%94%99%E8%AF%AF%E7%9A%84%E9%9B%86%E5%90%88/</id>
+    <published>2020-06-22T14:21:24.000Z</published>
+    <updated>2020-06-23T17:15:55.382Z</updated>
+    
+    <content type="html"><![CDATA[<p>集合 <code>S</code> 包含从1到&nbsp;<code>n</code>&nbsp;的整数。不幸的是，因为数据错误，导致集合里面某一个元素复制了成了集合里面的另外一个元素的值，导致集合丢失了一个整数并且有一个元素重复。</p><a id="more"></a><p>给定一个数组 <code>nums</code> 代表了集合 <code>S</code> 发生错误后的结果。你的任务是首先寻找到重复出现的整数，再找到丢失的整数，将它们以数组的形式返回。</p><p><strong>示例 1:</strong></p><pre><strong>输入:</strong> nums = [1,2,2,4]<strong>输出:</strong> [2,3]</pre><p><strong>注意:</strong></p><ol>    <li>给定数组的长度范围是&nbsp;[2, 10000]。</li>    <li>给定的数组是无序的。</li></ol><div><div>Related Topics</div><div><li>哈希表</li><li>数学</li></div></div><br/><p>有考虑异或，但没想出来。<br>时间复杂度O(n)，空间复杂度O(n)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span>[] findErrorNums(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> length = nums.length;</span><br><span class="line">    <span class="keyword">int</span> doubleNum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> lostNum = <span class="number">0</span>;</span><br><span class="line">    BitSet bitSet = <span class="keyword">new</span> BitSet(length);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (bitSet.get(nums[i])) &#123;</span><br><span class="line">            doubleNum = nums[i];</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            bitSet.set(nums[i],<span class="keyword">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; bitSet.length(); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (!bitSet.get(i)) &#123;</span><br><span class="line">            lostNum = i;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (lostNum == <span class="number">0</span>) &#123;</span><br><span class="line">        lostNum=length;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;doubleNum, lostNum&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><img src="http://img.codesboy.cn/2020/06/20200622232012.png" alt=""></p><p><a href="https://leetcode-cn.com/problems/set-mismatch/solution/cuo-wu-de-ji-he-by-leetcode/">91算法打卡第二十二天参考答案</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;集合 &lt;code&gt;S&lt;/code&gt; 包含从1到&amp;nbsp;&lt;code&gt;n&lt;/code&gt;&amp;nbsp;的整数。不幸的是，因为数据错误，导致集合里面某一个元素复制了成了集合里面的另外一个元素的值，导致集合丢失了一个整数并且有一个元素重复。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="刷算法题" scheme="https://www.codesboy.cn/categories/%E5%88%B7%E7%AE%97%E6%B3%95%E9%A2%98/"/>
+    
+    
+      <category term="刷算法题" scheme="https://www.codesboy.cn/tags/%E5%88%B7%E7%AE%97%E6%B3%95%E9%A2%98/"/>
+    
+  </entry>
   
   <entry>
     <title>36_有效的数独</title>
@@ -468,36 +491,6 @@
     &lt;li&gt;&lt;code&gt;remove(val)&lt;/code&gt;：元素 val 存在时，从集合中移除该项。&lt;/li&gt;
     &lt;li&gt;&lt;code&gt;getRandom&lt;/code&gt;：随机返回现有集合中的一项。每个元素应该有&lt;strong&gt;相同的概率&lt;/strong&gt;被返回。&lt;/li&gt;
 &lt;/ol&gt;
-    
-    </summary>
-    
-    
-      <category term="刷算法题" scheme="https://www.codesboy.cn/categories/%E5%88%B7%E7%AE%97%E6%B3%95%E9%A2%98/"/>
-    
-    
-      <category term="刷算法题" scheme="https://www.codesboy.cn/tags/%E5%88%B7%E7%AE%97%E6%B3%95%E9%A2%98/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>232_用栈实现队列</title>
-    <link href="https://www.codesboy.cn/2020/06/05/232_%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97/"/>
-    <id>https://www.codesboy.cn/2020/06/05/232_%E7%94%A8%E6%A0%88%E5%AE%9E%E7%8E%B0%E9%98%9F%E5%88%97/</id>
-    <published>2020-06-05T13:21:24.000Z</published>
-    <updated>2020-06-05T18:05:52.039Z</updated>
-    
-    <content type="html"><![CDATA[<p>使用栈实现队列的下列操作：</p><ul>    <li>push(x) -- 将一个元素放入队列的尾部。</li>    <li>pop() -- 从队列首部移除元素。</li>    <li>peek() -- 返回队列首部的元素。</li>    <li>empty() -- 返回队列是否为空。</li></ul><a id="more"></a><p><strong>示例:</strong></p><pre>MyQueue queue = new MyQueue();queue.push(1);queue.push(2);  queue.peek();  // 返回 1queue.pop();   // 返回 1queue.empty(); // 返回 false</pre><p><strong>说明:</strong></p><ul>    <li>你只能使用标准的栈操作 -- 也就是只有&nbsp;<code>push to top</code>,&nbsp;<code>peek/pop from top</code>,&nbsp;<code>size</code>, 和&nbsp;<code>is empty</code>&nbsp;操作是合法的。</li>    <li>你所使用的语言也许不支持栈。你可以使用 list 或者 deque（双端队列）来模拟一个栈，只要是标准的栈操作即可。</li>    <li>假设所有操作都是有效的 （例如，一个空的队列不会调用 pop 或者 peek 操作）。</li></ul><div><div>Related Topics</div><div><li>栈</li><li>设计</li></div></div><br/><p>用了两个栈，一个是对外输出栈stack（里面的元素一直符合先入先出），一个是备用栈bakStack。当push操作时，先看下stack是否为空，stack不为空则把元素push到bakStack中。当pop操作时，先把stack里面的元素pop出来，然后再判断stack是否为空，如果stack为空，这时候把bakStack的元素全部补充进stack，注意，这步操作后，stack的元素为正序，即符合先入先出了。</p><p>空间复杂度 O(n)，<br>时间复杂度 push 操作O(1)， pop 操作 O(n)，peek操作O(1)</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyQueue</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Stack&lt;Integer&gt; stack;</span><br><span class="line">    Stack&lt;Integer&gt; bakStack;</span><br><span class="line">    <span class="comment">/** Initialize your data structure here. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyQueue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.stack=<span class="keyword">new</span> Stack();</span><br><span class="line">        <span class="keyword">this</span>.bakStack = <span class="keyword">new</span> Stack();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Push element x to the back of queue. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">push</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!stack.isEmpty())&#123;</span><br><span class="line">            bakStack.push(x);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            stack.push(x);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Removes the element from in front of queue and returns that element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">pop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> temp = stack.pop();</span><br><span class="line">       <span class="keyword">if</span>(stack.isEmpty())&#123;</span><br><span class="line">           <span class="keyword">while</span>(!bakStack.isEmpty())&#123;</span><br><span class="line">               stack.push(bakStack.pop());</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> temp;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Get the front element. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">peek</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> stack.peek();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/** Returns whether the queue is empty. */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">empty</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> stack.isEmpty();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><img src="http://img.codesboy.cn/2020/06/20200605023728.png" alt=""></p><p><a href="https://github.com/leetcode-pp/91alg-1/issues/21#issuecomment-639573715">91算法打卡第五天参考答案</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;使用栈实现队列的下列操作：&lt;/p&gt;
-
-&lt;ul&gt;
-    &lt;li&gt;push(x) -- 将一个元素放入队列的尾部。&lt;/li&gt;
-    &lt;li&gt;pop() -- 从队列首部移除元素。&lt;/li&gt;
-    &lt;li&gt;peek() -- 返回队列首部的元素。&lt;/li&gt;
-    &lt;li&gt;empty() -- 返回队列是否为空。&lt;/li&gt;
-&lt;/ul&gt;
     
     </summary>
     
