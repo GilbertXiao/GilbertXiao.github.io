@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><meta name="keywords" content="[object Object]"><meta name="description" content="中位数是有序列表中间的数。如果列表长度是偶数，中位数则是中间两个数的平均值。"><meta name="author" content="GilbertXiao"><meta name="keywords" content="[object Object]"><meta name="description" content="给定一个可包含重复数字的序列，返回所有不重复的全排列。"><meta name="author" content="GilbertXiao"><meta name="keywords" content="[object Object]"><meta name="description" content="给定一个数组&amp;nbsp"><meta name="author" content="GilbertXiao"><meta name="keywords" content="[object Object]"><meta name="description" content="给定一个无重复元素的数组&amp;nbsp"><meta name="author" content="GilbertXiao"><meta name="keywords" content="[object Object]"><meta name="description" content="引文盖房项目需求：
+
+需要建房子：这个过程为打桩、砌墙、封顶"><meta name="author" content="GilbertXiao"><meta name="keywords" content="[object Object]"><meta name="description" content="给定二叉树根结点&amp;nbsp"><meta name="author" content="GilbertXiao"><title>814. 二叉树剪枝 - 飞码录</title><meta description="给定二叉树根结点&amp;amp;nbsp;root&amp;amp;nbsp;，此外树的每个结点的值要么是 0，要么是 1。"><meta property="og:type" content="article"><meta property="og:title" content="814. 二叉树剪枝"><meta property="og:url" content="https://www.codesboy.cn/2020/07/18/814_%E4%BA%8C%E5%8F%89%E6%A0%91%E5%89%AA%E6%9E%9D/"><meta property="og:site_name" content="飞码录"><meta property="og:description" content="给定二叉树根结点&amp;amp;nbsp;root&amp;amp;nbsp;，此外树的每个结点的值要么是 0，要么是 1。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://img.codesboy.cn/avatarGil.png"><meta property="article:published_time" content="2020-07-18T13:21:24.000Z"><meta property="article:modified_time" content="2020-07-21T16:18:35.460Z"><meta property="article:author" content="GilbertXiao"><meta property="article:tag" content="刷算法题"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="http://img.codesboy.cn/avatarGil.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.codesboy.cn/2020/07/18/814_%E4%BA%8C%E5%8F%89%E6%A0%91%E5%89%AA%E6%9E%9D/"},"headline":"814. 二叉树剪枝","image":["http://img.codesboy.cn/avatarGil.png"],"datePublished":"2020-07-18T13:21:24.000Z","dateModified":"2020-07-21T16:18:35.460Z","author":{"@type":"Person","name":"GilbertXiao"},"description":"给定二叉树根结点&amp;nbsp;root&amp;nbsp;，此外树的每个结点的值要么是 0，要么是 1。"}</script><link rel="alternative" href="/atom.xml" title="飞码录" type="application/atom+xml"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/font-awesome/5.12.0/css/all.min.css"><link rel="stylesheet" href="https://fonts.loli.net/css?family=Ubuntu:400,600|Source+Code+Pro|Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&amp;amp;subset=latin,latin-ext|Inconsolata|Itim|Lobster.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.12/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/css/justifiedGallery.min.css"><!--!--><!--!--><link rel="stylesheet" href="/css/style.css"><script src="https://cdnjs.loli.net/ajax/libs/jquery/3.3.1/jquery.min.js"></script><script src="/js/globalUtils.js"></script><script async="" referrerpolicy="no-referrer" src="//cdn.jsdelivr.net/npm/leancloud-storage@3/dist/av-min.js"></script><script src="//unpkg.com/valine/dist/Valine.min.js"></script><script src="/js/md5.min.js"></script></head><body class="is-2-column has-navbar-fixed-top"><nav class="navbar navbar-main is-fixed-top"><div class="showNav" id="toggle"><svg class="icon" t="1592127746034" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2297" width="200" height="200"><path d="M79.169331 113.350554l121.006899 0 0 120.557773-121.006899 0 0-120.557773ZM324.965581 113.350554l647.967334 0 0 120.557773-647.967334 0 0-120.557773ZM79.169331 444.549837l121.006899 0 0 120.557773-121.006899 0 0-120.557773ZM324.965581 444.549837l647.967334 0 0 120.557773-647.967334 0 0-120.557773ZM79.169331 754.840781l121.006899 0 0 120.334643-121.006899 0 0-120.334643ZM324.965581 754.840781l647.967334 0 0 120.334643-647.967334 0 0-120.334643Z" p-id="2298"></path></svg></div><div class="nav-bar sss" id="nav-bar"><div><ul class="nav-ul"><li class="nav-item"><a href="/">首页</a></li><li class="nav-item"><a href="/archives">归档</a></li><li class="nav-item"><a href="/categories">分类</a></li><li class="nav-item"><a href="/tags">标签</a></li><li class="nav-item"><a href="/designPattern">设计模式</a></li><li class="nav-item"><a href="/algorithm">刷算法题</a></li><li class="nav-item"><a href="javascript:;">源码</a><ul class="child"><li><a href="/code-source/index.html">tomcat源码</a></li><li><a href="/code-source">Spring源码</a></li></ul></li><li class="nav-item"><a href="javascript:;">阅读</a><ul class="child"><li><a href="/readings/ComicAlgorithm.html">漫画算法</a></li></ul></li><li class="nav-item"><a href="/message">留言</a></li><li class="nav-item"><a href="/about">关于</a></li></ul></div></div><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="http://img.codesboy.cn/namelog.png" alt="飞码录" height="28"></a></div><div class="navbar-menu"><div><ul class="navbar-start"><li style="position:relative"><a class="navbar-item" href="/">首页</a></li><li style="position:relative"><a class="navbar-item" href="/archives">归档</a></li><li style="position:relative"><a class="navbar-item" href="/categories">分类</a></li><li style="position:relative"><a class="navbar-item" href="/tags">标签</a></li><li style="position:relative"><a class="navbar-item" href="/designPattern">设计模式</a></li><li style="position:relative"><a class="navbar-item" href="/algorithm">刷算法题</a></li><li style="position:relative"><a class="navbar-item" href="javascript:;">源码</a><ul class="subMenu" style="position: absolute;top:100%;left: 0;"><li><a class="navbar-item" href="/code-source/index.html" style="width:100px;padding:8px 10px;">tomcat源码</a></li><li><a class="navbar-item" href="/code-source" style="width:100px;padding:8px 10px;">Spring源码</a></li></ul></li><li style="position:relative"><a class="navbar-item" href="javascript:;">阅读</a><ul class="subMenu" style="position: absolute;top:100%;left: 0;"><li><a class="navbar-item" href="/readings/ComicAlgorithm.html" style="width:100px;padding:8px 10px;">漫画算法</a></li></ul></li><li style="position:relative"><a class="navbar-item" href="/message">留言</a></li><li style="position:relative"><a class="navbar-item" href="/about">关于</a></li></ul></div></div><div class="navbar-end"><a class="navbar-item search" title="搜索" placeholder="搜索" href="javascript:;" style="height: 36px;width: 100px;margin: 12px 15px;box-sizing: border-box;border: 1px solid #dedede;border-radius: 20px;display: flex;justify-content: space-between;"><div style="width:60px;display: flex;justify-content: center;">搜索</div><i class="fas fa-search"></i></a><a class="navbar-item" id="night-nav" title="Night Mode" href="javascript:;"><i class="fas fa-moon" id="night-icon"></i></a></div></div></nav><script type="text/javascript" src="/js/theme-setting.js"></script><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen is-8-tablet is-8-desktop is-9-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta size-small is-uppercase level is-mobile"><div class="level-left"><i class="far fa-calendar-plus"> </i>2020-07-18  <a class="commentCountImg" href="/2020/07/18/814_%E4%BA%8C%E5%8F%89%E6%A0%91%E5%89%AA%E6%9E%9D/#comment-container"><span class="display-none-class">/2020/07/18/814_二叉树剪枝/</span><i class="far fa-comment-dots"></i> <span class="commentCount" id="ac6d5fa833144e96f2e9170260c282a3">99+</span>  </a><span class="level-item"><i class="far fa-clock"> </i>2 分钟  <i class="fas fa-pencil-alt"> </i>0.3 k</span><span class="level-item" id="busuanzi_container_page_pv"><i class="far fa-eye"></i>&nbsp;&nbsp;<span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">814. 二叉树剪枝</h1><div class="content"><p>给定二叉树根结点&nbsp;<code>root</code>&nbsp;，此外树的每个结点的值要么是 0，要么是 1。</p>
+
+<a id="more"></a>
+
+<p>返回移除了所有不包含 1 的子树的原二叉树。</p>
+
+<p>( 节点 X 的子树为 X 本身，以及所有 X 的后代。)</p>
+
+<pre>
+<strong>示例1:</strong>
+<strong>输入:</strong> [1,null,0,0,1]
+<strong>输出: </strong>[1,null,0,null,1]
+
+<strong>解释:</strong> 
+只有红色节点满足条件&ldquo;所有不包含 1 的子树&rdquo;。
+右图为返回的答案。
+
+<img alt="" src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/06/1028_2.png" style="width:450px" />
+</pre>
+
+<pre>
+<strong>示例2:</strong>
+<strong>输入:</strong> [1,0,1,0,0,0,1]
+<strong>输出: </strong>[1,null,1,null,1]
+
+
+<img alt="" src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/06/1028_1.png" style="width:450px" />
+</pre>
+
+<pre>
+<strong>示例3:</strong>
+<strong>输入:</strong> [1,1,0,1,1,0,1,0]
+<strong>输出: </strong>[1,1,0,1,1,null,1]
+
+
+<img alt="" src="https://s3-lc-upload.s3.amazonaws.com/uploads/2018/04/05/1028.png" style="width:450px" />
+</pre>
+
+<p><strong>说明: </strong></p>
+
+<ul>
+    <li>给定的二叉树最多有&nbsp;<code>100</code>&nbsp;个节点。</li>
+    <li>每个节点的值只会为&nbsp;<code>0</code> 或&nbsp;<code>1</code>&nbsp;。</li>
+</ul>
+<div><div>Related Topics</div><div><li>树</li></div></div>
+
+<br/>
+
+<p>时间复杂度 O(n) ,n表示n个节点<br>空间复杂度O(h),h表示树的高度</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">pruneTree</span><span class="params">(TreeNode root)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (root == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        root.left = pruneTree(root.left);</span><br><span class="line">        root.right = pruneTree(root.right);</span><br><span class="line">        <span class="keyword">if</span> (root.val == <span class="number">0</span> &amp;&amp; root.left == <span class="keyword">null</span>  &amp;&amp; root.right == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img.codesboy.cn/2020/07/20200721203424.png" alt=""></p>
+<hr>
+
+
+
+
+<p><a href="https://github.com/leetcode-pp/91alg-1/issues/75#issuecomment-660483924">91算法打卡第四十八天参考答案</a></p>
+</div><ul class="post-copyright"><li><strong>本文标题：</strong><a href="https://www.codesboy.cn/2020/07/18/814_二叉树剪枝/">814. 二叉树剪枝</a></li><li><strong>本文作者：</strong><a href="https://www.codesboy.cn">飞码录</a></li><li><strong>本文链接：</strong><a href="https://www.codesboy.cn/2020/07/18/814_二叉树剪枝/">https://www.codesboy.cn/2020/07/18/814_二叉树剪枝/</a></li><li><strong>版权声明：</strong><span>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="external nofollow" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</span></li></ul><div><div class="recommend-post"><span class="is-size-6 has-text-grey has-mr-7"># 相关文章</span><br><span>  1.<a class="is-size-6" href="/2020/07/28/295_%E6%95%B0%E6%8D%AE%E6%B5%81%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/" target="_blank">295. 数据流的中位数</a><br></span><span>  2.<a class="is-size-6" href="/2020/07/21/47_%E5%85%A8%E6%8E%92%E5%88%97II/" target="_blank">47. 全排列II</a><br></span><span>  3.<a class="is-size-6" href="/2020/07/20/40_%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8CII/" target="_blank">40. 组合总和II</a><br></span><span>  4.<a class="is-size-6" href="/2020/07/19/39_%E7%BB%84%E5%90%88%E6%80%BB%E5%92%8C/" target="_blank">39. 组合总和</a><br></span><span>  5.<a class="is-size-6" href="/2020/07/16/1319_%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/" target="_blank">1319. 连通网络的操作次数</a><br></span><span>  6.<a class="is-size-6" href="/2020/07/15/924_%E5%B0%BD%E9%87%8F%E5%87%8F%E5%B0%91%E6%81%B6%E6%84%8F%E8%BD%AF%E4%BB%B6%E7%9A%84%E4%BC%A0%E6%92%AD/" target="_blank">924. 尽量减少恶意软件的传播</a><br></span><span>  7.<a class="is-size-6" href="/2020/07/14/547_%E6%9C%8B%E5%8F%8B%E5%9C%88/" target="_blank">547. 朋友圈</a><br></span><span>  8.<a class="is-size-6" href="/2020/07/13/%E9%9D%A2%E8%AF%95%E9%A2%9817_17_%E5%A4%9A%E6%AC%A1%E6%90%9C%E7%B4%A2/" target="_blank">面试题17.17 多次搜索</a><br></span></div></div><link rel="stylesheet" href="https://cdnjs.loli.net/ajax/libs/social-share.js/1.0.16/css/share.min.css"><div class="social-share" data-initialized="true" data-mobile-sites="weibo,qq,douban"><a class="social-share-icon icon-weibo" href="#"></a><a class="social-share-icon icon-qq" href="#"></a><a class="social-share-icon icon-wechat" href="#" id="wechatShare"></a><a class="social-share-icon icon-douban" href="#"></a></div><script src="https://cdnjs.loli.net/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">喜欢这篇文章？打赏一下作者吧</h3><div class="buttons is-centered"><a class="button is-info donate"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>支付宝</span><span class="qrcode"><img src="http://img.codesboy.cn/aliCode.png" alt="支付宝"></span></a><a class="button is-success donate"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>微信</span><span class="qrcode"><img src="http://img.codesboy.cn/wechatCode.png" alt="微信"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/07/19/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">建造者模式</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/07/16/1319_%E8%BF%9E%E9%80%9A%E7%BD%91%E7%BB%9C%E7%9A%84%E6%93%8D%E4%BD%9C%E6%AC%A1%E6%95%B0/"><span class="level-item">1319. 连通网络的操作次数</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><div class="title is-5">评论</div><div class="content" id="comment-container"></div><script>var valine = new Valine({
+            el: '#comment-container' ,
+            notify: false,
+            verify: false,
+            appId: 'qS94bgk4xmn8eV2kTKQxEEpr-gzGzoHsz',
+            appKey: 'Xo9zFPCaEb0g37diyov78JI9',
+            placeholder: '感悟是需要记录的~',
+            avatar: 'mp',
+            avatarForce: false,
+            meta: ["nick","mail","link"],
+            pageSize: 10,
+            visitor: false,
+            highlight: true,
+            recordIP: false,
+            path:'/2020/07/18/814_二叉树剪枝/',
+            lang:'en',
+            enableQQ:true,
+            requiredFields:["nick","mail","link"]
+        });</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><!--!--></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="http://img.codesboy.cn/namelog.png" alt="飞码录" height="28"></a><p class="size-small"><span>&copy; 2020 飞码录</span>  Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>,Modify by <a href="https://github.com/removeif/hexo-theme-amazing" target="_blank">removeif</a> <br><span>© <a href="http://www.beian.miit.gov.cn/" target="_blank">粤ICP备20037458号</a><br></span><span><span id="statistic-times">loading...</span><script>function createTime(time) {
+            var n = new Date(time);
+            now.setTime(now.getTime() + 250),
+                days = (now - n) / 1e3 / 60 / 60 / 24,
+                dnum = Math.floor(days),
+                hours = (now - n) / 1e3 / 60 / 60 - 24 * dnum,
+                hnum = Math.floor(hours),
+            1 == String(hnum).length && (hnum = "0" + hnum),
+                minutes = (now - n) / 1e3 / 60 - 1440 * dnum - 60 * hnum,
+                mnum = Math.floor(minutes),
+            1 == String(mnum).length && (mnum = "0" + mnum),
+                seconds = (now - n) / 1e3 - 86400 * dnum - 3600 * hnum - 60 * mnum,
+                snum = Math.round(seconds),
+            1 == String(snum).length && (snum = "0" + snum),
+                document.getElementById("statistic-times").innerHTML = "❤️本站自 <strong>"+time.split(" ")[0].replace(/\//g,".")+"</strong> 已运行 <strong>" + dnum + "</strong> 天 <strong>" + hnum + "</strong> 小时 <strong>" + mnum + "</strong> 分 <strong>" + snum + "</strong> 秒！❤️";
+        }var now = new Date();setInterval("createTime('2020/05/16 00:00:00')", 250,"");</script><br></span><div class="size-small"><span>❤️感谢 <strong><span id="busuanzi_value_site_uv">99+</span></strong> 小伙伴的 <strong><span id="busuanzi_value_site_pv">99+</span></strong> 次光临！❤️</span></div></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/GilbertXiao"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdnjs.loli.net/ajax/libs/moment.js/2.22.2/moment-with-locales.min.js"></script><script>moment.locale("zh-CN");</script><script>var IcarusThemeSettings = {
+            site: {
+                url: 'https://www.codesboy.cn',
+                external_link: {"enable":true,"exclude":[]}
+            },
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="https://cdnjs.loli.net/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back-to-top.js" defer></script><!--!--><!--!--><script src="https://cdnjs.loli.net/ajax/libs/lightgallery/1.6.12/js/lightgallery-all.min.js" defer></script><script src="https://cdnjs.loli.net/ajax/libs/justifiedGallery/3.7.0/js/jquery.justifiedGallery.min.js" defer></script><!--!--><!--!--><script src="/js/toc.js" defer></script><script src="/js/main.js" defer></script><script>$.getScript('/js/comment-issue-data.js',function(){loadIssueData('qS94bgk4xmn8eV2kTKQxEEpr-gzGzoHsz','Xo9zFPCaEb0g37diyov78JI9','gilxyj','undefined',true);})</script><link rel="stylesheet" href="/css/insight.css"><div class="searchbox ins-search"><div class="searchbox-container ins-search-container"><div class="searchbox-input-wrapper"><input class="searchbox-input ins-search-input" type="text" placeholder="想要查找什么..."><span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span></div><div class="searchbox-result-wrapper ins-section-wrapper"><div class="ins-section-container"></div></div></div></div><script>(function (window) {
+            var INSIGHT_CONFIG = {
+                TRANSLATION: {
+                    POSTS: '文章',
+                    PAGES: '页面',
+                    CATEGORIES: '分类',
+                    TAGS: '标签',
+                    UNTITLED: '(无标题)',
+                },
+                CONTENT_URL: '/content.json',
+            };
+            window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+        })(window);</script><script src="/js/insight.js" defer></script></body></html>
